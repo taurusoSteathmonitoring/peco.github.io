@@ -1,0 +1,80 @@
+[
+    {
+        "site_id" : 1,
+        "siteName": "PECO_CABroadway_1",
+        "dvrId": "96.68.157.166",
+        "numOfcamerasToDisplay": 23
+    },
+    {
+        "site_id" : 2,
+        "siteName": "PECO_CACommonwealth_1",
+        "dvrId": "73.151.91.193",
+        "numOfcamerasToDisplay": 21
+    },
+    {
+        "site_id" : 3,
+        "siteName": "PECO_CAContraLoma_1",
+        "dvrId": "99.6.130.151",
+        "numOfcamerasToDisplay": 12
+    },
+    {
+        "site_id" : 4,
+        "siteName": "PECO_CANorthPoint_1",
+        "dvrId": "96.92.109.25",
+        "numOfcamerasToDisplay": 18
+    },
+    {
+        "site_id" : 5,
+        "siteName": "PECO_CAShastaCrossroads_1",
+        "dvrId": "24.180.0.122",
+        "numOfcamerasToDisplay": 22
+    },
+    {
+        "site_id" : 6,
+        "siteName": "PECO_CAVillageOne_1",
+        "dvrId": "108.84.238.143",
+        "numOfcamerasToDisplay": 20
+    },
+    {
+        "site_id" : 7,
+        "siteName": "PECO_CAWinerySquare_1",
+        "dvrId": "70.90.169.169",
+        "numOfcamerasToDisplay": 23
+    },
+    {
+        "site_id" : 8,
+        "siteName": "PECO_IASouthgateCenter_1",
+        "dvrId": "108.178.251.58",
+        "numOfcamerasToDisplay": 14
+    },
+    {
+        "site_id" : 9,
+        "siteName": "PECO_NVGreenValley_1",
+        "dvrId": "70.187.116.104",
+        "numOfcamerasToDisplay": 25
+    },
+    {
+        "site_id" : 10,
+        "siteName": "PECO_NYUniversityPlaza_1",
+        "dvrId": "104.228.138.114",
+        "numOfcamerasToDisplay": 6
+    },
+    {
+        "site_id" : 11,
+        "siteName": "PECO_PAEdgewoodCenter_1",
+        "dvrId": "96.89.61.89",
+        "numOfcamerasToDisplay": 12
+    },
+    {
+        "site_id" : 12,
+        "siteName": "PECO_SCNorthPointe_1",
+        "dvrId": "96.69.226.129",
+        "numOfcamerasToDisplay": 30
+    },
+    {
+        "site_id" : 13,
+        "siteName": "PECO_SunriseMarketplace_1", 
+        "dvrId": "174.71.198.66",
+        "numOfcamerasToDisplay": 32
+    }
+]

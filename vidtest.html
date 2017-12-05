@@ -1,0 +1,198 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript" src="jquery.ajax-cross-origin.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <title>Camera Viewer</title>
+        <style>
+             .container{ width: 1140px; max-width: 100%; } 
+        </style>
+    </head>
+    
+    
+    <body >
+        <div style="margin: 10px 55px; ">
+            <div class="dropdown">
+                <span id="siteName" class="lead"></span>
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Select Site
+                </button>
+                <div id="siteMenu" class="dropdown-menu" aria-labelledby="dropdownMenu2"></div>
+            </div>
+        </div>
+        <div class="container">
+            <div>
+                <div class="">
+                    <div class="row justify-content-center" style="margin: 3px 0">
+                        <div class="col align-self-start offset-md-1">
+                            <button id="previousPage" class="btn btn-warning">Previous Page</button>
+                        </div>
+                        <div class="col align-self-center offset-md-3">
+                            <p href="#">Page <span id="pageNum" class="badge" style="background-color: darkgray">1</span></p>
+                        </div>
+                        <div class="col align-self-end offset-md-3">
+                            <button id="nextPage" class="btn btn-primary">Next Page</button>
+                        </div>
+                    </div>
+                    <div id="htmlContainer" class="row"></div>
+                    <br />
+                </div>
+            </div>
+        </div>
+    
+        
+        <script>
+            // Settings
+            var totalPages;
+            var currentPageNum;
+            var numOfcamerasToDisplay;
+            //var siteId = 0;
+            var dvrId;
+            var idKey;
+            var userId = "monitor";
+            var password = "monitor09";
+            var allSites = [];
+    
+            // Start
+            window.onload = function () {
+                // userId = prompt("Please enter dvr UserId", "monitor");
+                // password = prompt("Please enter ydvrour password", "monitor09");
+                init();
+            }
+    
+            function init() {
+                //Set up the UI
+                currentPageNum = 1;
+                $("#previousPage").addClass('disabled');
+                $("#nextPage").addClass('disabled');
+                $('#pageNum').text(currentPageNum);
+    
+                //By Default Load the first 12 cameras
+                console.log("we now have a dvr id: "+dvrId)
+                if (dvrId != undefined)
+                    LoadCameras(1, numOfcamerasToDisplay);
+                else {
+                    LoadSettings();
+                    for(i=0; i < allSites.length; i++){
+                        GetSession(i);
+                    }   
+                }
+                    
+            }
+    
+            // Event listener/handler for next page button click
+            $('#nextPage').click(function () {
+                if (currentPageNum == totalPages) {
+                    $('#nextPage').addClass('disabled');
+                } else {
+                    $('#htmlContainer').empty();
+                    $('#previousPage').removeClass('disabled');
+                    currentPageNum++
+                    if (currentPageNum == totalPages)
+                        $('#nextPage').addClass('disabled');
+                    $('#pageNum').text(currentPageNum);     
+                    LoadCameras();               
+                }
+            });
+    
+            // Event listener/handler for prev page button click
+            $('#previousPage').click(function () {
+                if (currentPageNum == 1) {
+                    $("#previousPage").addClass('disabled');
+                } else {
+                    $('#htmlContainer').empty();
+                    $('#nextPage').removeClass('disabled');
+                    currentPageNum--
+                    if (currentPageNum == 1)
+                        $('#previousPage').addClass('disabled');
+                    $('#pageNum').text(currentPageNum);
+                    LoadCameras();
+                }
+            });
+    
+            // Event handler to load the Site the user selects
+            function LoadSite(index) {
+                dvrId = allSites[index].dvrId;
+                siteName = allSites[index].siteName;
+                idKey = allSites[index].idKey;
+                //GetSession(dvrId)
+                console.log("sitename: "+siteName + " dvr_id: "+ dvrId)
+                $('#dropdownMenu2').text(siteName);
+                init()
+                if (totalPages > 1)
+                    $("#nextPage").removeClass('disabled');
+            }
+    
+            // Function to populate dropdown sitename list based on the data from json settings file
+            function PopulateSiteMenu(jsonData) {
+                //Wipe the sites from the current page.
+                $('#siteMenu').empty();
+                //console.log(jsonData)
+                for (i = 0; jsonData.length > i; i += 1) {
+                    allSites.push({ dvrId: jsonData[i].dvrId, siteName: jsonData[i].siteName });
+                    $('#siteMenu').append('<button class="dropdown-item" type="button" onClick="LoadSite('+i+')">' + allSites[i].siteName + '</button>');
+                }
+            }
+            function GetSession(index){
+                url = 'http://'+allSites[index].dvrId+'//commandData.cgi?method=user_login&id='+userId+'&pwd='+password+'';
+                $.ajax({
+                    crossOrigin: true,
+                    url: url,
+                    dataType: 'JSON',
+                    async: false,
+                    success: function (json) {
+                        data = json.split('key":"')[1]
+                        allSites[index].idKey = data.substring(0, data.length - 2);
+                    }
+                });
+                 
+            }
+    
+            //Load settings from json
+            function LoadSettings() {
+                $.ajax({
+                    url: "vidsettings.json",
+                    dataType: 'json',
+                    async: false,
+                    success: function (json) {
+                        data = json;
+                        PopulateSiteMenu(data)
+                        numOfcamerasToDisplay = 36; 
+                        totalPages = Math.ceil(numOfcamerasToDisplay / 4)
+                    }
+                });
+            }
+    
+            function LoadCameras() {
+                var endingPoint = (4 * currentPageNum) + 1;
+                var startingPoint = (endingPoint - 4);
+
+                if (currentPageNum == totalPages)
+                    endingPoint = numOfcamerasToDisplay + 1
+    
+                //Wipe the camera from the current page.
+                $('#htmlContainer').empty();
+                console.log("currentpage: "+ currentPageNum +" start: "+ startingPoint + " - " + " endingpoint: "+endingPoint)
+                for (i = startingPoint; i < endingPoint; i++) {
+                        var html = GetBaseHtml(dvrId, idKey ,i);
+                    //Add the Html to the DOM
+                    $('#htmlContainer').append(html)
+                }
+            }
+    
+            // Function to handle the displaying of camaras
+            function GetBaseHtml(dvrId, Id_key, camId) {
+                // Create the base Html
+                var html = '<div class="card col-lg-6">\
+                                <img width="100%" src="http://'+ dvrId +'/mjpeg?cam='+ camId +'&IDKey='+ Id_key +'">\
+                                <div class="card-block" style="margin:0; padding:0;">\
+                                    <h3 class="title">Camera '+ camId+ '</h3>\
+                                </div>\
+                            </div>';
+                return html;
+            }
+        </script>
+    </body>
+    </html>
