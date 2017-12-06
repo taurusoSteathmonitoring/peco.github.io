@@ -136,7 +136,7 @@
                 }
             }
             function GetSession(index){
-                url = 'http://'+allSites[index].dvrId+'//commandData.cgi?method=user_login&id='+userId+'&pwd='+password+'';
+                url = 'https://'+allSites[index].dvrId+'//commandData.cgi?method=user_login&id='+userId+'&pwd='+password+'';
                 $.ajax({
                     crossOrigin: true,
                     url: url,
