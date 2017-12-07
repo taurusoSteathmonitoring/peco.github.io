@@ -152,7 +152,7 @@
                 },
                 async: false,
                 success: function (json) {
-                    StopLoading()
+                    StopLoading();
                     data = json;
                     PopulateSiteMenu(data)
                     numOfcamerasToDisplay = 36;
@@ -171,7 +171,7 @@
                 <div id="siteMenu" class="dropdown-menu" aria-labelledby="dropdownMenu2"></div>');
         }
 
-        function LoadCameras() 
+        function LoadCameras() {
             var endingPoint = (4 * currentPageNum) + 1;
             var startingPoint = (endingPoint - 4);
             if (currentPageNum == totalPages)
