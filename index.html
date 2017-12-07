@@ -155,6 +155,7 @@
                 success: function (json) {
                     data = json.split('key":"')[1]
                     allSites[index].idKey = data.substring(0, data.length - 2);
+                    console.log(data);
                 }
             });
 
