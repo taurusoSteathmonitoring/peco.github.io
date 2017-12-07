@@ -57,7 +57,6 @@
         var totalPages;
         var currentPageNum;
         var numOfcamerasToDisplay;
-        //var siteId = 0;
         var dvrId;
         var ipTokens = {};
         var idKey;
@@ -86,9 +85,6 @@
                 LoadCameras(1, numOfcamerasToDisplay);
             else {
                 LoadSettings();
-                // for (i = 0; i < allSites.length; i++) {
-                //     GetSession(i);
-                // }
             }
 
         }
@@ -125,14 +121,12 @@
 
         // Event handler to load the Site the user selects
         function LoadSite(index) {
-            // GetSession(index)
             dvrId = allSites[index].key;
             currentIP = allSites[index].value;
-            //siteName = allSites[index].key;
             idKey = ipTokens[currentIP];
-            //GetSession(dvrId)
-            console.log("sitename: " + siteName + " dvr_id: " + dvrId)
-            $('#dropdownMenu2').text(siteName);
+
+            $('#dropdownMenu2').text(dvrId);
+
             init()
             if (totalPages > 1)
                 $("#nextPage").removeClass('disabled');
@@ -142,35 +136,12 @@
         function PopulateSiteMenu(jsonData) {
             //Wipe the sites from the current page.
             $('#siteMenu').empty();
-            //console.log(jsonData)
             
             ipTokens = jsonData.ip_tokens
             allSites = jsonData.dvr_ips
             for (i = 0; allSites.length > i; i += 1) {
                 $('#siteMenu').append('<button class="dropdown-item" type="button" onClick="LoadSite('+i+')">' + allSites[i].key + '</button>');
             }
-            console.log(ipTokens);
-            console.log(allSites);
-        }
-        function GetSession(index) {
-            console.log(ipTokens[allSites[index].dvrIp]);
-            url = 'http://' + allSites[index].dvrIp + '//commandData.cgi?method=user_login&id=' + userId + '&pwd=' + password + '';
-            $.ajax({
-                //crossOrigin: true,
-                type: 'GET',
-                url: url,
-                dataType: 'JSON',
-                async: false,
-                success: function (json) {
-                    data = json.split('key":"')[1]
-                    allSites[index].idKey = data.substring(0, data.length - 2);
-                    console.log(json)
-                },
-                // error: function (msg, b, c) {
-                //     alert(b)
-                // }
-            });
-
         }
 
         //Load settings from json
@@ -201,18 +172,18 @@
             $('#htmlContainer').empty();
             console.log("currentpage: " + currentPageNum + " start: " + startingPoint + " - " + " endingpoint: " + endingPoint)
             for (i = startingPoint; i < endingPoint; i++) {
-                var html = GetBaseHtml(idKey, i);
+                var html = GetBaseHtml(i);
                 //Add the Html to the DOM
                 $('#htmlContainer').append(html)
             }
         }
 
         // Function to handle the displaying of camaras
-        function GetBaseHtml(Id_key, camId) {
+        function GetBaseHtml(camId) {
             // Create the base Html
             var html = 
                 '<div class="card col-lg-6">\
-                    <img width="100%" src="http://'+ currentIP + '/mjpeg?cam=' + camId + '&IDKey=' + Id_key + '">\
+                    <img width="100%" src="http://'+ currentIP + '/mjpeg?cam=' + camId + '&IDKey=' + idKey + '">\
                     <div class="card-block" style="margin:0; padding:0;">\
                         <h3 class="title">Camera '+ camId + '</h3>\
                     </div>\
