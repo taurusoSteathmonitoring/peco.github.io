@@ -21,13 +21,10 @@
 
 <body>
     <div style="margin: 10px 55px; ">
-        <div class="dropdown">
+        <div id="siteMenuContainer" class="dropdown">
             <span id="siteName" class="lead"></span>
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-                Select Site
-            </button>
-            <div id="siteMenu" class="dropdown-menu" aria-labelledby="dropdownMenu2"></div>
+            <img id="lazy" src="https://media.giphy.com/media/y1ZBcOGOOtlpC/200.gif" alt="">
+            <!--  -->
         </div>
     </div>
     <div class="container">
@@ -46,6 +43,7 @@
                         <button id="nextPage" class="btn btn-primary">Next Page</button>
                     </div>
                 </div>
+                
                 <div id="htmlContainer" class="row"></div>
                 <br />
             </div>
@@ -154,6 +152,7 @@
                 },
                 async: false,
                 success: function (json) {
+                    StopLoading()
                     data = json;
                     PopulateSiteMenu(data)
                     numOfcamerasToDisplay = 36;
@@ -162,7 +161,17 @@
             });
         }
 
-        function LoadCameras() {
+        function StopLoading() {
+            $('#siteMenuContainer').empty();
+            $('#siteMenuContainer').append('\
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"\
+                    aria-expanded="false">\
+                    Select Site\
+                </button>\
+                <div id="siteMenu" class="dropdown-menu" aria-labelledby="dropdownMenu2"></div>');
+        }
+
+        function LoadCameras() 
             var endingPoint = (4 * currentPageNum) + 1;
             var startingPoint = (endingPoint - 4);
             if (currentPageNum == totalPages)
