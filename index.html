@@ -150,7 +150,7 @@
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader('Authorization', 'Token 74f6300a349888019a841b543728a49a212d83a0');
                 },
-                async: false,
+                async: true,
                 success: function (json) {
                     StopLoading();
                     data = json;
