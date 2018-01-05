@@ -64,7 +64,7 @@
                         <div class="card" v-on:click="setSelectedCamera(selectedCamera)"
                              style="width: 90%; margin-left: 5%;">
                             <video-feed :camera-number='selectedCamera'
-                                        :url="'http://' + currentDvr.value + ':443'+ '/mjpeg?cam=' + (selectedCamera) + '&IDKey=' + currentDvr.token"
+                                        :url="'http://' + currentDvr.value + '/mjpeg?cam=' + (selectedCamera) + '&IDKey=' + currentDvr.token"
                                         v-if="!loading" inline-template>
                                 <div class="card-image">
                                     <img :src="url">
@@ -84,7 +84,7 @@
                     <!--Update the source when the page is changed by binding url and cameraNumber-->
                     <div class="card" v-on:click="setSelectedCamera(cam+minCamera)">
                         <video-feed :camera-number='cam + minCamera'
-                                    :url="'http://' + currentDvr.value +':443'+ '/mjpeg?cam=' + (cam+minCamera) + '&IDKey=' + currentDvr.token"
+                                    :url="'http://' + currentDvr.value + '/mjpeg?cam=' + (cam+minCamera) + '&IDKey=' + currentDvr.token"
                                     v-if="!loading" inline-template>
                             <div class="card-image">
                                 <img :src="url">
