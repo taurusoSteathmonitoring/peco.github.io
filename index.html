@@ -38,17 +38,19 @@
                 </a>
 
                 <ul class="right hide-on-med-and-down">
-                    <li v-if="user" style="padding-right:1em;" v-on:click="logout()">
-                        <a href="#!" >
-                            {{ user.firstName + " " + user.lastName}}
-                        </a>
-                    </li>
                     <li style="padding-right:1em;">
                         <a class="dropdown-button" href="#!" data-activates="dropdown1" data-constrainwidth="false">
                             Property List
                             <i v-if="user" class="material-icons right">arrow_drop_down</i>
                         </a>
                     </li>
+                    <li v-if="user" style="padding-right:1em;" v-on:click="logout()">
+                        <a href="#!">
+                            {{ user.firstName + " " + user.lastName}}
+                            <i class="material-icons right">exit_to_app</i>
+                        </a>
+                    </li>
+
                 </ul>
                 <ul class="side-nav" id="mobile-drop">
                     <li v-for="item in dvrOptions">
@@ -135,8 +137,8 @@
 
     <script>
         var urlBase = "https://zeus.stealthmonitoring.net/api-v1";
-        var token;
         var headers;
+
         Vue.component('video-feed', {
             props: {
                 cameraNumber: Number,
@@ -172,9 +174,9 @@
                     // Pull list of DVRs for the given user
                     this.$http.post(urlBase + '/user-login', { "username": this.username, "password": this.password })
                         .then(function (response) {
-                            this.user = response.body;                     
-                            //localStorage.setItem('user', JSON.stringify({firstName: this.user.firstName, lastName: this.user.lastName, token: this.user.token}))
-                            headers = { 'Authorization': 'Token ' + this.user.token };
+                            this.user = response.body;
+                            localStorage.setItem('user', JSON.stringify(this.user))
+                            this.setToken(this.user.token)
                             this.getDvrOptions();
                         }, function (error) {
                             Materialize.toast('Incorrect credentials', 5000);
@@ -191,8 +193,12 @@
                     this.page = 1;
                     this.loading = false;
                     this.selectedCamera = null;
-                    this.user= null;
+                    this.user = null;
                     localStorage.removeItem('user');
+                },
+
+                setToken: function (token) {
+                    headers = { 'Authorization': 'Token ' + token };
                 },
 
                 getDvrOptions: function () {
@@ -201,19 +207,17 @@
                         { headers: headers }).then(
                         function (response) {
                             this.dvrOptions = response.body.dvr_ips;
-                            console.log(this.dvrOptions)
                             $('select').material_select();
                             $('.modal').modal();
                             $(".button-collapse").sideNav();
                         }, function (error) {
                             Materialize.toast('Unable to access Database', 5000);
-                        }
-                        )
-
+                        })
                 },
                 setCurrentDvr: function (selectedDvr) {
                     // Get the currentDvr's token or clear currentDvr if unable to retrieve token
                     this.minCamera = 0;
+                    this.page = 1;
                     this.currentDvr = selectedDvr;
                     this.selectedCamera = null;
                     this.loading = true;
@@ -245,7 +249,11 @@
 
         // Start
         window.onload = function () {
-
+            this.dvrData.user = JSON.parse(localStorage.getItem('user'));
+            if (this.dvrData.user) {
+                this.dvrData.setToken(this.dvrData.user.token);
+                this.dvrData.getDvrOptions();
+            }
         };
     </script>
 </body>
