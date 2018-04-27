@@ -168,31 +168,39 @@
             },
             methods: {
                 login: function () {
-                    if(this.username === "jpenny" && this.password === "test"){
-                        this.user = {"email": "jpenny@stealthy.com", "username": "jpenny", "firstName": "Jason", "lastName": "Penny", "token": "jsdkhdshf74y78yr87ufh8h487h8r8h"};
-                            localStorage.setItem('user', JSON.stringify(this.user))
-                            this.setToken(this.user.token)
+                    if(this.username === "tomejia" ){
+                        this.$http.post(urlBase + '/user-login', { "username": this.username, "password": this.password })
+                            .then(function (response) {
+                                this.user = response.body;
+                                localStorage.setItem('user', JSON.stringify(this.user))
+                                this.setToken(this.user.token)
+                                this.dvrOptions = [
+                                    {"key":"FRSC_CityHall_1","value":"65.36.54.116"},
+                                    {"key":"PECO_NVGreenValley_1","value":"70.187.116.104"},
+                                    {"key":"LDG_TXParkPlaceLoyola_1","value":""},
+                                    {"key":"AHG_TXArrowoodApts_1","value":"96.83.62.58"},
+                                    {"key":"BXMR_CAUplandTownSq_1","value":"76.81.207.34"},
+                                    {"key":"CHVZ_TXCasaSaldana_1","value":"98.6.222.10"},
+                                    {"key":"CL_FLOrlandoKiaWest_1","value":"71.42.38.85"},
+
+                                    {"key":"GDKE_TX1717McKinney_1","value":"216.201.155.78"},
+                                    {"key":"GRNT_TXFactorySix03_2","value":"16.201.162.163"},
+                                    {"key":"GRNT_TXGP5_1","value":"216.201.223.149"},
+
+                                    {"key":"SBR_TXParkForestSW_1","value":"76.213.72.241"},
+                                    {"key":"SEWL_TXGrapeBMW_2","value":"47.190.46.87"},
+                                    {"key":"SEWL_TXGrapeCadillac_2","value":"50.84.142.69"}
+                                ];
                             
-                            this.dvrOptions = [
-                                {"key":"FRSC_CityHall_1","value":"65.36.54.116"},
-                                {"key":"PECO_NVGreenValley_1","value":"70.187.116.104"},
-                                {"key":"LDG_TXParkPlaceLoyola_1","value":""},
-                                {"key":"AHG_TXArrowoodApts_1","value":"96.83.62.58"},
-                                {"key":"BXMR_CAUplandTownSq_1","value":"76.81.207.34"},
-                                {"key":"CHVZ_TXCasaSaldana_1","value":"98.6.222.10"},
-                                {"key":"CL_FLOrlandoKiaWest_1","value":"71.42.38.85"},
-                                
-                                {"key":"GDKE_TX1717McKinney_1","value":"216.201.155.78"},
-                                {"key":"GRNT_TXFactorySix03_2","value":"16.201.162.163"},
-                                {"key":"GRNT_TXGP5_1","value":"216.201.223.149"},
-                                
-                                {"key":"SBR_TXParkForestSW_1","value":"76.213.72.241"},
-                                {"key":"SEWL_TXGrapeBMW_2","value":"47.190.46.87"},
-                                {"key":"SEWL_TXGrapeCadillac_2","value":"50.84.142.69"}
-                            ]
-                            $('select').material_select();
-                            $('.modal').modal();
-                            $(".button-collapse").sideNav();
+                                $('select').material_select();
+                                $('.modal').modal();
+                                $(".button-collapse").sideNav();
+                            }, function (error) {
+                                Materialize.toast('Incorrect credentials', 5000);
+                            })
+                            
+                            
+                            
                     }else{
                         // Pull list of DVRs for the given user
                         this.$http.post(urlBase + '/user-login', { "username": this.username, "password": this.password })
