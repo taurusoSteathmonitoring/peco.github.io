@@ -168,7 +168,7 @@
             },
             methods: {
                 login: function () {
-                    if(this.username === "tomejia" ){
+                    if(this.username === "jpenny" ){
                         this.$http.post(urlBase + '/user-login', { "username": this.username, "password": this.password })
                             .then(function (response) {
                                 this.user = response.body;
@@ -282,7 +282,7 @@
             if (this.dvrData.user) {
                 this.dvrData.setToken(this.dvrData.user.token);
                 
-                if(this.dvrData.user.username === "tomejia"){
+                if(this.dvrData.user.username === "jpenny"){
                     this.dvrData.dvrOptions = [
                         {"key":"SBR_TXParkForestSW_1","value":"76.213.72.241"},
                         {"key":"SEWL_TXGrapeBMW_2","value":"47.190.46.87"},
