@@ -145,9 +145,9 @@
             },
             data: {
             },
-            created() {
+            created: fuction() {
             },
-            destroy() {
+            destroy: fuction() {
                 this.url = '';
             },
             methods: {}
@@ -168,7 +168,7 @@
             },
             methods: {
                 login: function () {
-                    if(this.username === "jpenny" ){
+                    if(this.username === "tomejia" ){
                         this.$http.post(urlBase + '/user-login', { "username": this.username, "password": this.password })
                             .then(function (response) {
                                 this.user = response.body;
