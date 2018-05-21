@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,6 +9,8 @@
 
     <!-- JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- <script>window.jQuery = window.$ = module.exports</script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
         crossorigin="anonymous"></script>
@@ -32,60 +35,9 @@
                     <span v-else>
                         Stealth Monitoring DVR Viewer
                     </span>
-                </a>
-                <a href="#" data-activates="mobile-drop" class="button-collapse">
-                    <i class="material-icons">menu</i>
-                </a>
-
-                <ul class="right hide-on-med-and-down">
-                    <li style="padding-right:1em;">
-                        <a class="dropdown-button" href="#!" data-activates="dropdown1" data-constrainwidth="false">
-                            Property List
-                            <i v-if="user" class="material-icons right">arrow_drop_down</i>
-                        </a>
-                    </li>
-                    <li v-if="user" style="padding-right:1em;" v-on:click="logout()">
-                        <a href="#!">
-                            {{ user.firstName + " " + user.lastName}}
-                            <i class="material-icons right">exit_to_app</i>
-                        </a>
-                    </li>
-
-                </ul>
-                <ul class="side-nav" id="mobile-drop">
-                    <li v-for="item in dvrOptions">
-                        <a v-on:click="setCurrentDvr(item)">{{ item.key }}</a>
-                    </li>
-                </ul>
+                </a>                           
             </div>
-        </nav>
-
-        <!-- Login In Card -->
-        <div v-if="!user" style="margin:150px" class="row">
-            <div class="col s12 m3"></div>
-            <div class="col s12 m6 center">
-                <div class="card white darken-1">
-                    <div class="card-content">
-                        <span class="card-title">Welcome to GeoViewer</span>
-                        <div class="row">
-                            <div class="input-field col s12 m6">
-                                <input id="username" type="text" class="validate" v-model="username">
-                                <label for="username" data-error="wrong" data-success="right">Username</label>
-                            </div>
-                            <div class="input-field col s12 m6">
-                                <input id="password" type="password" class="validate" v-model="password">
-                                <label for="password" data-error="wrong" data-success="right">Password</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-action">
-                        <button class="btn" v-on:click="login()">Login!</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col s12 m3"></div>
-        </div>
-
+        </nav>      
         <div class="row" style="margin-top: 1em;" v-if="currentDvr.key">
             <!--Handle the paging-->
             <div class="col s6 center">
@@ -115,9 +67,12 @@
                     </video-feed>
                 </div>
             </div>
-            <div class="col" v-if="cam+minCamera!==selectedCamera" :class="{m6: cam+minCamera!==selectedCamera && selectedCamera==null,
-                              s4: cam+minCamera!==selectedCamera && selectedCamera!=null,
-                              l3: cam+minCamera!==selectedCamera && selectedCamera!=null}" v-for="cam in 4">
+
+            
+            <div style="margin-left: 0.0%;" class="col" v-if="cam+minCamera!==selectedCamera" v-for="cam in 6" :class="{
+                m4: cam+minCamera!==selectedCamera && selectedCamera==null,
+                s4: cam+minCamera!==selectedCamera && selectedCamera!=null,
+                l3: cam+minCamera!==selectedCamera && selectedCamera!=null}" >
                 <!--Display 4 Cameras per page-->
                 <!--Update the source when the page is changed by binding url and cameraNumber-->
                 <div class="card" v-on:click="setSelectedCamera(cam+minCamera)">
@@ -138,6 +93,7 @@
     <script>
         var urlBase = "https://zeus.stealthmonitoring.net/api-v1";
         var headers;
+               
         Vue.component('video-feed', {
             props: {
                 cameraNumber: Number,
@@ -152,6 +108,8 @@
             },
             methods: {}
         });
+
+
         var dvrData = new Vue({
             el: '#app',
             data: {
@@ -164,57 +122,35 @@
                 page: 1,
                 loading: false,
                 selectedCamera: null,
-                user: null
+                user: null,
+                url: "",
+                dvrs: [
+                  { "DvrId": "PECO_CABroadway_1",  "Reference": "011091"},
+                  { "DvrId": "PECO_CAContraLoma_1",  "Reference": "010052"},
+                  { "DvrId": "PECO_CAShastaCrossroads_1",  "Reference": "011012"},
+                  { "DvrId": "PECO_IASouthgateCenter_1",  "Reference": "010087"},
+                  { "DvrId": "PECO_MAFiveTown_1",  "Reference": "011111"},
+                  { "DvrId": "PECO_NJPlaza23_1",  "Reference": "010156"},
+                  { "DvrId": "PECO_SCNorthPointe_1",  "Reference": "011064"},
+                ]
             },
             methods: {
                 login: function () {
-                    if(this.username === "tomejia" ){
-                        this.$http.post(urlBase + '/user-login', { "username": this.username, "password": this.password })
-                            .then(function (response) {
-                                this.user = response.body;
-                                localStorage.setItem('user', JSON.stringify(this.user))
-                                this.setToken(this.user.token)
-                                this.dvrOptions = [
-                                    {"key":"SBR_TXParkForestSW_1","value":"76.213.72.241"},
-                                    {"key":"SEWL_TXGrapeBMW_2","value":"47.190.46.87"},
-                                    {"key":"SEWL_TXGrapeCadillac_2","value":"50.84.142.69"},
-                                    {"key":"FRSC_CityHall_1","value":"65.36.54.116"},
-                                    {"key":"PECO_NVGreenValley_1","value":"70.187.116.104"},
-                                    {"key":"AHG_TXArrowoodApts_1","value":"96.83.62.58"},
-                                    {"key":"BXMR_CAUplandTownSq_1","value":"76.81.207.34"},
-                                    {"key":"CHVZ_TXCasaSaldana_1","value":"98.6.222.10"},
-                                    {"key":"CL_FLOrlandoKiaWest_1","value":"71.42.38.85"},
-
-                                    {"key":"GDKE_TX1717McKinney_1","value":"216.201.155.78"},
-                                    {"key":"GRNT_TXGP5_1","value":"216.201.223.149"},
-
-                                    
-                                ];
-                            
-                                $('select').material_select();
-                                $('.modal').modal();
-                                $(".button-collapse").sideNav();
-                            }, function (error) {
-                                Materialize.toast('Incorrect credentials', 5000);
-                            })
-                            
-                            
-                            
-                    }else{
-                        // Pull list of DVRs for the given user
-                        this.$http.post(urlBase + '/user-login', { "username": this.username, "password": this.password })
-                            .then(function (response) {
-                                this.user = response.body;
-                                localStorage.setItem('user', JSON.stringify(this.user))
-                                this.setToken(this.user.token)
-                                this.getDvrOptions();
-                            }, function (error) {
-                                Materialize.toast('Incorrect credentials', 5000);
-                            })
-                    }
-                    
-                    
+                  // var url = new URL(window.location);
+                  var username = url.searchParams.get("username");
+                  var password = url.searchParams.get("password");
+                    // Pull list of DVRs for the given user
+                    this.$http.post(urlBase + '/user-login', { "username": username, "password": password })
+                        .then(function (response) {
+                            this.user = response.body;
+                            localStorage.setItem('user', JSON.stringify(this.user))
+                            this.setToken(this.user.token)
+                            this.getDvrOptions();
+                        }, function (error) {
+                            Materialize.toast('Incorrect credentials', 5000);
+                        })
                 },
+
                 logout: function () {
                     this.username = "";
                     this.password = "";
@@ -228,22 +164,33 @@
                     this.user = null;
                     localStorage.removeItem('user');
                 },
+
                 setToken: function (token) {
                     headers = { 'Authorization': 'Token ' + token };
                 },
+
                 getDvrOptions: function () {
                     // Pull list of DVRs for the given user
                     this.$http.get(urlBase + '/dvr/dvr-ip-search',
                         { headers: headers }).then(
                         function (response) {
-                            this.dvrOptions = response.body.dvr_ips;
-                            $('select').material_select();
-                            $('.modal').modal();
-                            $(".button-collapse").sideNav();
+                            //this.dvrOptions = response.body.dvr_ips;
+                            var dvr = this.buildResults(response.body.dvr_ips)
+                            this.setCurrentDvr(dvr);
                         }, function (error) {
                             Materialize.toast('Unable to access Database', 5000);
                         })
                 },
+
+                buildResults: function(results){  
+                  var url = new URL(window.location);
+                  var reference = url.searchParams.get("reference");        
+                  var dvrId = this.dvrs.filter(d => d.Reference == reference)[0].DvrId
+                  var ip = results.filter(r => r.key == dvrId)[0].value
+                  var dvr = {key: dvrId, value: ip}
+                  return dvr;
+                },
+
                 setCurrentDvr: function (selectedDvr) {
                     // Get the currentDvr's token or clear currentDvr if unable to retrieve token
                     this.minCamera = 0;
@@ -276,37 +223,19 @@
                 }
             }
         });
+
         // Start
         window.onload = function () {
-            this.dvrData.user = JSON.parse(localStorage.getItem('user'));
-            if (this.dvrData.user) {
-                this.dvrData.setToken(this.dvrData.user.token);
-                
-                if(this.dvrData.user.username === "jpenny"){
-                    this.dvrData.dvrOptions = [
-                        {"key":"SBR_TXParkForestSW_1","value":"76.213.72.241"},
-                        {"key":"SEWL_TXGrapeBMW_2","value":"47.190.46.87"},
-                        {"key":"SEWL_TXGrapeCadillac_2","value":"50.84.142.69"},
-                        {"key":"FRSC_CityHall_1","value":"65.36.54.116"},
-                        {"key":"PECO_NVGreenValley_1","value":"70.187.116.104"},
-                        {"key":"AHG_TXArrowoodApts_1","value":"96.83.62.58"},
-                        {"key":"BXMR_CAUplandTownSq_1","value":"76.81.207.34"},
-                        {"key":"CHVZ_TXCasaSaldana_1","value":"98.6.222.10"},
-                        {"key":"CL_FLOrlandoKiaWest_1","value":"71.42.38.85"},
-
-                        {"key":"GDKE_TX1717McKinney_1","value":"216.201.155.78"},
-                        {"key":"GRNT_TXGP5_1","value":"216.201.223.149"}                    
-                    ];
-                    $('select').material_select();
-                    $('.modal').modal();
-                    $(".button-collapse").sideNav();
-                }else{
-                    this.dvrData.getDvrOptions();
-                }
-                
-            }
+          this.dvrData.url = new URL(window.location);
+          console.log(this.dvrData.url.search.slice(13))
+          this.dvrData.login()
+          //this.dvrData.setCurrentDvr("PECO_CABroadway_1")
+          // this.dvrData.user = JSON.parse(localStorage.getItem('user'));
+          // if (this.dvrData.user) {
+          //     this.dvrData.setToken(this.dvrData.user.token);
+          //     this.dvrData.getDvrOptions();
+          // }
         };
     </script>
 </body>
-
 </html>
