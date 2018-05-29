@@ -196,7 +196,8 @@
 
                 buildResults: function(results){  
                     //var selectedRoles = vm.roles.filter(function(x) { return x.id === role.id; });
-                  var reference = this.getUrlParameter("reference");        
+                  var reference = this.getUrlParameter("reference");  
+                  console.log(reference)  
                   var item = this.dvrs.filter(function(d) { return d.Reference == reference})[0];
                   var dvrId = item.DvrId;
                   var ip = results.filter(function(r) { return r.key == dvrId})[0].value
