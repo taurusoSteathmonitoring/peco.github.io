@@ -151,6 +151,8 @@
                     // Pull list of DVRs for the given user
                     this.$http.post(urlBase + '/user-login', { "username": "WIgnore2268", "password": "test" })
                         .then(function (response) {
+                            console.log("we are in the then")
+                            console.log(response)
                             
                             this.user = response.body;                           
                             //localStorage.setItem('user', JSON.stringify(this.user))
