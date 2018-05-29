@@ -150,7 +150,7 @@
                     console.log(username + "changes")
                     console.log(password + "changes")
                     // Pull list of DVRs for the given user
-                    this.$http.post(urlBase + '/user-login' +?randomvar="+new Date().getTime(), { "username": "WIgnore2268", "password": "test" })
+                    this.$http.post(urlBase + '/user-login' +"?randomvar="+new Date().getTime(), { "username": "WIgnore2268", "password": "test" })
                         .then(function (response) {
                             console.log("we are in the then")
                             console.log(response)
