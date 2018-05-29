@@ -146,8 +146,8 @@
                 login: function () {
                     var username = this.getUrlParameter("username");  
                     var password = this.getUrlParameter("password");
-                    console.log(username + "space")
-                    console.log(password + "space")
+                    console.log(username + "changes")
+                    console.log(password + "changes")
                     // Pull list of DVRs for the given user
                     this.$http.post(urlBase + '/user-login', { "username": "WIgnore2268", "password": "test" })
                         .then(function (response) {
