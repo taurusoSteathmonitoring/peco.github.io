@@ -110,8 +110,6 @@
             },
             methods: {}
         });
-
-
         var dvrData = new Vue({
             el: '#app',
             data: {
@@ -132,9 +130,27 @@
                   { "DvrId": "PECO_CAShastaCrossroads_1",  "Reference": "011012"},
                   { "DvrId": "PECO_IASouthgateCenter_1",  "Reference": "010087"},
                   { "DvrId": "PECO_MAFiveTown_1",  "Reference": "011111"},
-                  { "DvrId": "PECO_NJPlaza23_1",  "Reference": "010156"},
                   { "DvrId": "PECO_SCNorthPointe_1",  "Reference": "011064"},
-                  { "DvrId": "PECO_CAAntelopeMrkt_1",  "Reference": "005010"},  
+                  { "DvrId": "PECO_PAEdgewoodCenter_1",  "Reference": "0100"},
+                  { "DvrId": "PECO_CACommonwealth_1",  "Reference": "713"},
+                  { "DvrId": "PECO_GABartowMarketplace_1",  "Reference": "1"},
+                  { "DvrId": "PECO_SunriseMarketplace_1",  "Reference": "ANCH"},
+                  { "DvrId": "PECO_CAVillageOne_1",  "Reference": "0139"},
+
+
+                  { "DvrId": "PECO_AZRollingHills_1",  "Reference": ""}, // can't find reference
+                  { "DvrId": "PECO_CAWinerySquare_1",  "Reference": ""}, // can't find reference
+                  { "DvrId": "PECO_SCEastPointPlaza_1",  "Reference": ""}, // can't find reference
+                  { "DvrId": "PECO_NYUniversityPlaza_1",  "Reference": ""}, // can't find reference
+
+                  { "DvrId": "PECO_CAAntelopeMrkt_1",  "Reference": "005010"}, // Url is non ip
+                  { "DvrId": "PECO_CAWestAcres_1",  "Reference": "3241"}, // Url is non ip
+                  { "DvrId": "PECO_NJPlaza23_1",  "Reference": "010156"}, // Url has port 443
+                  
+                  { "DvrId": "PECO_NVGreenValley_1",  "Reference": ""}, // Dvr  down atm and can't find reference
+                  { "DvrId": "PECO_CANorthPoint_1",  "Reference": "610"}, // Dvr  down atm
+                  
+                  { "DvrId": "PECO_GAVillageatGlynnPl_1",  "Reference": "090"} // ip not working
                 ]
             },
             methods: {
@@ -144,14 +160,13 @@
                     var results = regex.exec(location.search);
                     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
                 },
-
                 login: function () {
                     var username = this.getUrlParameter("username");  
                     var password = this.getUrlParameter("password");
                     console.log(username + "changes")
                     console.log(password + "changes")
                     // Pull list of DVRs for the given user
-                    this.$http.post(urlBase + '/user-login' +"?randomvar="+new Date().getTime(), { "username": "WIgnore2268", "password": "test" })
+                    this.$http.post(urlBase + '/user-login' +"?randomvar="+new Date().getTime(), { "username": username, "password": password })
                         .then(function (response) {
                             console.log("we are in the then")
                             console.log(response)
@@ -165,7 +180,6 @@
                             Materialize.toast('Incorrect credentials', 5000);
                         })
                 },
-
                 logout: function () {
                     this.username = "";
                     this.password = "";
@@ -179,11 +193,9 @@
                     this.user = null;
                     localStorage.removeItem('user');
                 },
-
                 setToken: function (token) {
                     headers = { 'Authorization': 'Token ' + token };
                 },
-
                 getDvrOptions: function () {
                     // Pull list of DVRs for the given user
                     this.$http.get(urlBase + '/dvr/dvr-ip-search',
@@ -197,7 +209,6 @@
                             Materialize.toast('Unable to access Database', 5000);
                         })
                 },
-
                 buildResults: function(results){  
                     //var selectedRoles = vm.roles.filter(function(x) { return x.id === role.id; });
                   var reference = this.getUrlParameter("reference");  
@@ -208,7 +219,6 @@
                   var dvr = {key: dvrId, value: ip, }
                   return dvr;
                 },
-
                 setCurrentDvr: function (selectedDvr) {
                     // Get the currentDvr's token or clear currentDvr if unable to retrieve token
                     this.minCamera = 0;
@@ -241,7 +251,6 @@
                 }
             }
         });
-
         // Start
         window.onload = function () {          
           this.dvrData.login()
