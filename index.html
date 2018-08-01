@@ -162,14 +162,9 @@
                 login: function () {
                     var username = this.getUrlParameter("username");  
                     var password = this.getUrlParameter("password");
-                    console.log(username + "changes")
-                    console.log(password + "changes")
                     // Pull list of DVRs for the given user
                     this.$http.post(urlBase + '/user-login' +"?randomvar="+new Date().getTime(), { "username": username, "password": password })
-                        .then(function (response) {
-                            console.log("we are in the then")
-                            console.log(response)
-                            
+                        .then(function (response) {                          
                             this.user = response.body;                           
                             //localStorage.setItem('user', JSON.stringify(this.user))
                             this.setToken(this.user.token)
