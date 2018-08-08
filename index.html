@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -72,7 +71,7 @@
             </div>
 
             
-            <div style="margin-left: 0.0%;" class="col" v-if="cam+minCamera!==selectedCamera" v-for="cam in 5" :class="{
+            <div style="margin-left: 0.0%;" class="col" v-if="cam+minCamera!==selectedCamera" v-for="cam in 6" :class="{
                 m4: cam+minCamera!==selectedCamera && selectedCamera==null,
                 s4: cam+minCamera!==selectedCamera && selectedCamera!=null,
                 l3: cam+minCamera!==selectedCamera && selectedCamera!=null}" >
@@ -143,7 +142,9 @@
                   { "DvrId": "PECO_CANorthPoint_1",  "Reference": "011032"}, 
                   { "DvrId": "PECO_AZSouthernPalms_1",  "Reference": "010173"},
                   { "DvrId": "PECO_GAVillageatGlynnPl_1",  "Reference": "010516"},
-                  
+                  { "DvrId": "PECO_FLGoldenEagle_1",  "Reference": "010178"},
+                  { "DvrId": "PECO_TXMansfieldMkt_1",  "Reference": "011124"},
+
                   { "DvrId": "PECO_NVGreenValley_1",  "Reference": "011103"},  // Dvr  down atm
                   { "DvrId": "PECO_AZRollingHills_1",  "Reference": "010661"}, // ip not working
                   { "DvrId": "PECO_ILOakMillPlaza_1",  "Reference": "010175"}, // ip not working
@@ -233,6 +234,10 @@
                         );
                 },
                 setPage: function (newCameraMin) {
+                    console.log(newCameraMin);
+                    console.log(this.minCamera);
+                    console.log(this.page);
+                    
                     this.selectedCamera = null;
                     if (newCameraMin > this.minCamera) {
                         this.page++;
