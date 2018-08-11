@@ -40,7 +40,7 @@
         <div class="row" style="margin-top: 0.2em; margin-bottom: 0em" v-if="currentDvr.key">
             <!--Handle the paging-->
             <div class="col s4 center">
-                <button class="btn" v-if="minCamera > 0" v-on:click="setPage(minCamera-6)">
+                <button class="btn" v-if="minCamera > 0" v-on:click="setPage(minCamera-5)">
                     Page {{ page - 1}}
                 </button>
             </div>
@@ -48,7 +48,7 @@
                     <span v-if="currentDvr.key">{{ currentDvr.key }}</span>
                 </div>
             <div class="col s4 center">
-                <button class="btn" v-if="minCamera < 32" v-on:click="setPage(minCamera+6)">
+                <button class="btn" v-if="minCamera < 32" v-on:click="setPage(minCamera+5)">
                     Page {{ page + 1 }}
                 </button>
             </div>
@@ -71,7 +71,7 @@
             </div>
 
             
-            <div style="margin-left: 0.0%;" class="col" v-if="cam+minCamera!==selectedCamera" v-for="cam in 6" :class="{
+            <div style="margin-left: 0.0%;" class="col" v-if="cam+minCamera!==selectedCamera" v-for="cam in 5" :class="{
                 m4: cam+minCamera!==selectedCamera && selectedCamera==null,
                 s4: cam+minCamera!==selectedCamera && selectedCamera!=null,
                 l3: cam+minCamera!==selectedCamera && selectedCamera!=null}" >
@@ -144,7 +144,6 @@
                   { "DvrId": "PECO_GAVillageatGlynnPl_1",  "Reference": "010516"},
                   { "DvrId": "PECO_FLGoldenEagle_1",  "Reference": "010178"},
                   { "DvrId": "PECO_TXMansfieldMkt_1",  "Reference": "011124"},
-
                   { "DvrId": "PECO_NVGreenValley_1",  "Reference": "011103"},  // Dvr  down atm
                   { "DvrId": "PECO_AZRollingHills_1",  "Reference": "010661"}, // ip not working
                   { "DvrId": "PECO_ILOakMillPlaza_1",  "Reference": "010175"}, // ip not working
